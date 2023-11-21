@@ -30,9 +30,6 @@ public final class DrawNumberControllerImpl implements DrawNumberController {
     @Override
     public void addView(final DrawNumberView view) {
         Objects.requireNonNull(view, "Cannot set a null view");
-        // if (!this.viewList.isEmpty()) {
-        //     throw new IllegalStateException("The view is already set! Multiple views are not supported");
-        // } 
         viewList.add(view);
         view.setController(this);
         view.start();
@@ -40,12 +37,9 @@ public final class DrawNumberControllerImpl implements DrawNumberController {
 
     @Override
     public void newAttempt(final int n) {
-        // Objects.requireNonNull(view, "There is no view attached!").result(model.attempt(n));
-        if(!viewList.isEmpty()){
-            final DrawResult savedResult = model.attempt(n); 
-            for(var view : viewList){
-                view.result(savedResult);
-            }
+        final DrawResult savedResult = model.attempt(n); 
+        for(var view : viewList){
+            view.result(savedResult);
         }
     }
 

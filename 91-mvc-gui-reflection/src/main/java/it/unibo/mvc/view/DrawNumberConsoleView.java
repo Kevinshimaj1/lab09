@@ -6,11 +6,9 @@ import it.unibo.mvc.api.DrawNumberView;
 import it.unibo.mvc.api.DrawResult;
 
 public class DrawNumberConsoleView implements DrawNumberView {
-    private DrawNumberController controller;
 
     @Override
     public void setController(DrawNumberController observer) {
-        this.controller = observer;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.unibo.mvc;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 import it.unibo.mvc.api.DrawNumberController;
 import it.unibo.mvc.api.DrawNumberView;
@@ -31,15 +32,14 @@ public final class LaunchApp {
         final DrawNumberController app = new DrawNumberControllerImpl(model);
       
         for(int i=0; i<3; i++){
-            final Class<?> clSwingClass = Class.forName("it.unibo.mvc.view.DrawNumberSwingView");
-            final Constructor<?> cns = clSwingClass.getConstructor();
-            final DrawNumberView o = (DrawNumberView)cns.newInstance();
-            app.addView(o);
-
-            final Class<?> clConsoleClass = Class.forName("it.unibo.mvc.view.DrawNumberConsoleView");
-            final Constructor<?> cnsConsole = clConsoleClass.getConstructor();
-            final DrawNumberView a = (DrawNumberView)cnsConsole.newInstance();
-            app.addView(a);
+            for (final var name: List.of("Swing", "Console")) {
+                final Class<?> viewClass = Class.forName("it.unibo.mvc.view.DrawNumber" + name + "View");
+                final Constructor<?> constructor = viewClass.getConstructor();
+                if (!DrawNumberView.class.isAssignableFrom(viewClass)) {
+                    throw new IllegalStateException("invalid UI type " + viewClass.getSimpleName());
+                }
+                app.addView((DrawNumberView) constructor.newInstance());
+            }
         }
     }
 }
